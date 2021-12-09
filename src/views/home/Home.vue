@@ -3,29 +3,33 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners" />
-    <home-recomend :recommends="recommends"></home-recomend>
-    <feature-view />
-    <tab-control
-      class="tab-control"
-      :titles="['流行', '新款', '精选']"
-      @tabClick="tabClick"
-    />
-    <goods-list :goods="goods[currentType].list"></goods-list>
-    <back-top @click.native="backTop"></back-top>
-
+    <scroll class="content" ref="scroll" :pullingUp="loadMore" :data="goods[currentType].list">
+      <home-swiper :banners="banners" />
+      <home-recomend :recommends="recommends" />
+      <feature-view />
+      <tab-control
+        class="tab-control"
+        :titles="['流行', '新款', '精选']"
+        @tabClick="tabClick"
+      />
+      <goods-list :goods="goods[currentType].list" />
+    </scroll>
+    <back-top @click.native="backTop" />
   </div>
 </template>
 
 <script>
+// 导入组件
 import NavBar from "components/common/navbar/NavBar";
+import Scroll from "components/common/scroll/Scroll";
 import HomeSwiper from "./childComps/HomeSwiper";
 import HomeRecomend from "./childComps/HomeRecomend";
 import FeatureView from "./childComps/FeatureView";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
-import BackTop from 'components/content/backTop/BackTop'
+import BackTop from "components/content/backTop/BackTop";
 
+// 导入路由
 import { getHomeMultidata, getHomeGoods } from "network/home";
 export default {
   name: "Home",
@@ -36,25 +40,34 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
-    BackTop
+    BackTop,
+    Scroll,
   },
   data() {
     return {
       banners: [],
       recommends: [],
       goods: {
-        "pop": { page: 0, list: [] },
-        "new": { page: 0, list: [] },
-        "sell": { page: 0, list: [] },
+        pop: { page: 0, list: [] },
+        new: { page: 0, list: [] },
+        sell: { page: 0, list: [] },
       },
-      currentType: 'pop',
+      currentType: "pop",
     };
   },
   created() {
+    // 请求轮播数据
     this._getHomeMultidata();
+    // 请求商品数据
     this._getHomeGoods("pop");
     this._getHomeGoods("new");
     this._getHomeGoods("sell");
+
+    // 监听一些事件
+    this.$bus.$on("imgLoad", () => {
+      console.log("home imgLoad");
+      // this.$refs.scroll.refresh();
+    });
   },
   methods: {
     /**
@@ -78,24 +91,29 @@ export default {
     事件监听的相关方法
      */
     tabClick(index) {
-      switch(index) {
+      switch (index) {
         case 0:
-          this.currentType = 'pop';
+          this.currentType = "pop";
           break;
         case 1:
-          this.currentType = 'new';
+          this.currentType = "new";
           break;
         case 2:
-          this.currentType = 'sell';
+          this.currentType = "sell";
           break;
         default:
-          this.currentType = 'pop';
+          this.currentType = "pop";
       }
     },
+
     backTop() {
       console.log("backTop");
       // this.scroll.scrollTo(0, 0);  // 滚动到顶部
-    }
+    },
+    loadMore() {
+      console.log("home load more");
+      this._getHomeGoods(this.currentType);
+    },
   },
 };
 </script>
@@ -118,6 +136,7 @@ export default {
   z-index: 9;
 }
 
+/* 这个很关键，top和bottom决定了wrapper高度小于滑动区域scrollerHeight */
 .content {
   position: absolute;
   top: 44px;

@@ -5,9 +5,7 @@
       :key="index"
       :goodsItem="item"
       class="item"
-    >
-      <!-- {{item}} -->
-    </goods-list-item>
+    />
   </div>
 </template>
 

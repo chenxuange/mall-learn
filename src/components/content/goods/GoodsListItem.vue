@@ -4,7 +4,7 @@
     @click="itemClick"
     v-if="Object.keys(goodsItem).length !== 0"
   >
-    <img :src="showImage" alt="" />
+    <img  v-lazy="showImage" @load="imgLoad" alt="" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -31,6 +31,11 @@ export default {
       //2.跳转到详情页
       this.$router.push({ path: "detail", query: { iid } });
     },
+    imgLoad() {
+      // console.log("img loaded");
+      // 使用前必须绑定在原型上
+      this.$bus.$emit("imgLoad");
+    }
   },
   computed: {
     showImage() {
