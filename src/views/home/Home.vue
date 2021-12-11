@@ -3,18 +3,33 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content" ref="scroll" :pullingUp="loadMore" :data="goods[currentType].list">
-      <home-swiper :banners="banners" />
+    <!-- tab切换栏的吸顶效果是通过条件显隐展示的 -->
+    <tab-control
+      ref="topTab"
+      v-show="showTabControl"
+      class="tab-control"
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+    />
+    <scroll
+      class="content"
+      ref="scroll"
+      @pullingUp="loadMore"
+      @scroll="contentScroll"
+      :data="showGoodsList"
+    >
+      <home-swiper :banners="banners" @imgLoaded="swiperLoaded" />
       <home-recomend :recommends="recommends" />
       <feature-view />
       <tab-control
+        ref="contentTab"
         class="tab-control"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
       />
-      <goods-list :goods="goods[currentType].list" />
+      <goods-list :goods="showGoodsList" />
     </scroll>
-    <back-top @click.native="backTop" />
+    <back-top v-show="showBackTop" @click.native="backTop" />
   </div>
 </template>
 
@@ -31,6 +46,7 @@ import BackTop from "components/content/backTop/BackTop";
 
 // 导入路由
 import { getHomeMultidata, getHomeGoods } from "network/home";
+import { TOP_DISTANCE } from "common/const";
 export default {
   name: "Home",
   components: {
@@ -53,7 +69,16 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      showBackTop: false,
+      showTabControl: false,
+      offsetTop: 0,
+      saveY: 0,
     };
+  },
+  computed: {
+    showGoodsList() {
+      return this.goods[this.currentType].list;
+    },
   },
   created() {
     // 请求轮播数据
@@ -65,9 +90,29 @@ export default {
 
     // 监听一些事件
     this.$bus.$on("imgLoad", () => {
-      console.log("home imgLoad");
+      // console.log("home imgLoad");
+      // todo: 这里有bug，可能读不到refresh
       // this.$refs.scroll.refresh();
     });
+  },
+  mounted() {
+    // console.log(this.$refs.contentTab.$el.offsetTop);
+  },
+  destroyed() {
+    console.log("home destroyed");
+  },
+  activated() {
+    // 和生命周期有关
+    console.log("activated");
+    // 初始没有bscroll对象
+    // console.log(this.$refs.scroll.scroll); // null
+    // console.log(this.$refs.scroll);
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+  },
+  deactivated() {
+    console.log("deactivated");
+    this.saveY = this.$refs.scroll.getScrollY();
+    console.log(this.saveY);
   },
   methods: {
     /**
@@ -87,6 +132,7 @@ export default {
         this.goods[type].page += 1;
       });
     },
+
     /**
     事件监听的相关方法
      */
@@ -104,11 +150,27 @@ export default {
         default:
           this.currentType = "pop";
       }
+      // 将两个tabControl同步
+      this.$refs.topTab.currentIndex = index;
+      this.$refs.contentTab.currentIndex = index;
+    },
+    contentScroll(position) {
+      // 判断展示backTop
+      this.showBackTop = position.y <= -TOP_DISTANCE;
+      // 判断显示吸顶效果
+      this.showTabControl = position.y <= -this.offsetTop;
+    },
+    swiperLoaded() {
+      this.offsetTop = this.$refs.contentTab.$el.offsetTop;
+      // console.log(this.offsetTop);
     },
 
     backTop() {
       console.log("backTop");
-      // this.scroll.scrollTo(0, 0);  // 滚动到顶部
+      // 不要直接调子组件的原生方法，简单包装一下
+      // this.$refs.scroll.scroll.scrollTo(0, 0);
+      console.log(this.$refs.scroll.scroll.scrollTo);
+      this.$refs.scroll.scrollTo(0, 0);
     },
     loadMore() {
       console.log("home load more");
@@ -132,7 +194,7 @@ export default {
 }
 
 .tab-control {
-  position: relative;
+  /* position: relative; */
   z-index: 9;
 }
 

@@ -23,9 +23,14 @@ export default {
       scroll: null,
     };
   },
-  mounted() {
-    // setTimeout(this._initScroll, 20);
-    this._initScroll();
+  computed: {
+    scrollY() {
+      return this.scroll.y;
+    },
+  },
+  created() {
+    setTimeout(this._initScroll, 20);
+    // this._initScroll(); // error，必须先渲染组件，挂载组件时才实例化BScroll对象
   },
   methods: {
     _initScroll() {
@@ -34,23 +39,32 @@ export default {
         click: true,
         pullUpLoad: true,
       });
-      // console.log(this.scroll);
-      // this.scroll.on("scroll", (position) => {
-      //   console.log(position);
-      // });
+      this.scroll.on("scroll", (position) => {
+        // console.log(position);
+        this.$emit("scroll", position);
+      });
       this.scroll.on("pullingUp", () => {
-        console.log("上拉加载更多");
+        // console.log("上拉加载更多");
         this.$emit("pullingUp");
       });
     },
     refresh() {
       this.scroll && this.scroll.refresh && this.scroll.refresh();
+      console.log(this.scroll);
+    },
+    scrollTo(x, y, time = 300) {
+      this.scroll && this.scroll.scrollTo(x, y, time);
+    },
+    getScrollY() {
+      return this.scroll.y;
     },
   },
   watch: {
     data() {
-      // this.refresh();
-      console.log(this.scroll);
+      // 监听上拉数据加载完毕后，告诉better-scroll数据已加载
+      this.scroll.refresh(); // 暂时没发现效果
+
+      this.scroll.finishPullUp();
       // setTimeout(this.refresh, 20);
     },
   },
@@ -58,5 +72,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
