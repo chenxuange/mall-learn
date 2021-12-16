@@ -69,7 +69,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
-      showBackTop: false,
+      showBackTop: true,
       showTabControl: false,
       offsetTop: 0,
       saveY: 0,
@@ -87,34 +87,46 @@ export default {
     this._getHomeGoods("pop");
     this._getHomeGoods("new");
     this._getHomeGoods("sell");
-
-    // 监听一些事件
-    this.$bus.$on("imgLoad", () => {
-      // console.log("home imgLoad");
-      // todo: 这里有bug，可能读不到refresh
-      // this.$refs.scroll.refresh();
-    });
   },
   mounted() {
-    // console.log(this.$refs.contentTab.$el.offsetTop);
+    const refresh = this.debounce(this.$refs.scroll.refresh, 500);
+    // 监听一些事件
+    this.$bus.$on("imgLoad", () => {
+      // console.log("refresh");
+      // this.$refs.scroll.refresh();
+      refresh();
+    });
   },
   destroyed() {
     console.log("home destroyed");
   },
   activated() {
     // 和生命周期有关
-    console.log("activated");
+    // console.log("activated");
     // 初始没有bscroll对象
     // console.log(this.$refs.scroll.scroll); // null
     // console.log(this.$refs.scroll);
+    // console.log("滑动到上次退出位置")
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
   },
   deactivated() {
-    console.log("deactivated");
+    // console.log("deactivated");
     this.saveY = this.$refs.scroll.getScrollY();
-    console.log(this.saveY);
   },
   methods: {
+    /**
+     * 防抖动函数
+     */
+    debounce(func, delay) {
+      let timer = null;
+      return function (...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this, args);
+          // console.log("refresh");
+        }, delay);
+      };
+    },
     /**
      * 网络请求的相关方法
      */
@@ -130,6 +142,9 @@ export default {
         const newList = res.data.list;
         this.goods[type].list.push(...newList);
         this.goods[type].page += 1;
+
+        // 完成上拉加载更多
+        this.$refs.scroll.finishedPullUp();
       });
     },
 
@@ -155,6 +170,7 @@ export default {
       this.$refs.contentTab.currentIndex = index;
     },
     contentScroll(position) {
+      // console.log(position)
       // 判断展示backTop
       this.showBackTop = position.y <= -TOP_DISTANCE;
       // 判断显示吸顶效果
@@ -169,7 +185,7 @@ export default {
       console.log("backTop");
       // 不要直接调子组件的原生方法，简单包装一下
       // this.$refs.scroll.scroll.scrollTo(0, 0);
-      console.log(this.$refs.scroll.scroll.scrollTo);
+      // console.log(this.$refs.scroll.scroll.scrollTo);
       this.$refs.scroll.scrollTo(0, 0);
     },
     loadMore() {
