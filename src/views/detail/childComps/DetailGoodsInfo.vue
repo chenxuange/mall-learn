@@ -42,10 +42,10 @@ export default {
   },
   methods: {
     imgLoad() {
-      console.log("load one")
+      // console.log("load one")
       if(++this.counter === this.imagesLength) {
         this.$emit("imgLoaded");
-        console.log("all load")
+        // console.log("all load")
       }
     }
   },

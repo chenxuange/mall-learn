@@ -20,7 +20,7 @@
       <!-- 推荐 -->
       <goods-list  :goods="goodsList" ref="recommend" />
     </scroll>
-    <back-top v-show="this.showBackTop" />
+    <back-top @click.native="backTop" v-show="this.showBackTop" />
   </div>
 </template>
 
@@ -84,29 +84,29 @@ export default {
     this.__getRecommend();
   },
   mounted() {
-    console.log(this.$refs.scroll);
+    // console.log(this.$refs.scroll);
   },
   methods: {
     __getDetail(iid) {
-      //向后台请求
+      //向后台请求数据
       getDetail(iid).then((res) => {
         //1.获取数据
         const data = res.result;
         console.log(res);
         // 2.获取顶部的图片数据
         this.topImages = data.itemInfo.topImages;
-        // 3.获取商品信息
+        // 3.获取商品信息并封装成对象
         this.goods = new Goods(
           data.itemInfo,
           data.columns,
           data.shopInfo.services
         );
-        // 4.获取店铺信息
+        // 4.获取店铺信息,封装成对象
         this.shop = new Shop(data.shopInfo);
         // 5.获取商品详情信息
         this.detailInfo = data.detailInfo;
 
-        // 6.保存参数信息
+        // 6.保存参数信息,封装成对象
         this.paramInfo = new GoodsParam(
           data.itemParams.info,
           data.itemParams.rule
@@ -119,21 +119,17 @@ export default {
     },
     __getRecommend() {
       getRecommend().then((res) => {
-        console.log(res);
         this.goodsList = res.data.list;
       });
     },
     // 滚动事件
     contentScroll(position) {
-        console.log(position);
         this.showBackTop = position.y <= -1000;
-
         // todo:
 
     },
     imgLoaded() {
       this.$refs.scroll.refresh();
-      console.log("refresh");
       this.themeTops = []
       this.themeTops.push(0);
       this.themeTops.push(this.$refs.param.$el.offsetTop);
@@ -142,6 +138,9 @@ export default {
       console.log(this.themeTops);
 
     },
+    backTop() {
+      console.log("backtop")
+    }
   },
 };
 </script>
