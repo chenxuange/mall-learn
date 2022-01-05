@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <detail-nav-bar class="detail-nav" />
+    <detail-nav-bar ref="nav" class="detail-nav" @titleClick="titleClick" />
     <scroll class="content" ref="scroll" @scroll="contentScroll">
       <!-- 轮播图 -->
       <detail-swiper :images="topImages"></detail-swiper>
@@ -18,7 +18,7 @@
       <!-- 评论 -->
       <detail-comment-info :commentInfo="commentInfo" ref="comment" />
       <!-- 推荐 -->
-      <goods-list  :goods="goodsList" ref="recommend" />
+      <goods-list :goods="goodsList" ref="recommend" />
     </scroll>
     <back-top @click.native="backTop" v-show="this.showBackTop" />
   </div>
@@ -36,7 +36,7 @@ import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
 import GoodsList from "components/content/goods/GoodsList";
 
-import BackTop from 'components/content/backTop/BackTop'
+import BackTop from "components/content/backTop/BackTop";
 // 导入请求
 import {
   getDetail,
@@ -59,8 +59,8 @@ export default {
       goodsList: [],
       themeTops: [], // 各区域位置
 
-      showBackTop: false
-
+      showBackTop: false,
+      currentIndex: 0, // 导航标题索引
     };
   },
   components: {
@@ -124,23 +124,36 @@ export default {
     },
     // 滚动事件
     contentScroll(position) {
-        this.showBackTop = position.y <= -1000;
-        // todo:
-
+      // 控制返回按钮显示
+      this.showBackTop = (-position.y) > 500;
+      // 浏览到对应位置和导航条切换
+      const p_y = -position.y;
+      let _len = this.themeTops.length;
+      for(let i = 0; i < _len-1; i++) {
+        if(this.currentIndex !== i && p_y >= this.themeTops[i] && p_y <= this.themeTops[i+1]) {
+          this.currentIndex = i;  // 保存索引
+          this.$refs.nav.currentIndex = this.currentIndex;  // 更新子组件索引
+        }
+      }
     },
     imgLoaded() {
       this.$refs.scroll.refresh();
-      this.themeTops = []
+      this.themeTops = [];
       this.themeTops.push(0);
+      // 依次是参数、评论、推荐
       this.themeTops.push(this.$refs.param.$el.offsetTop);
       this.themeTops.push(this.$refs.comment.$el.offsetTop);
       this.themeTops.push(this.$refs.recommend.$el.offsetTop);
-      console.log(this.themeTops);
-
+      this.themeTops.push(Number.MAX_VALUE);
+    },
+    titleClick(index) {
+      // y为负值
+      this.$refs.scroll.scrollTo(0, -this.themeTops[index], 200);
     },
     backTop() {
-      console.log("backtop")
-    }
+      // console.log("backtop");
+      this.$refs.scroll.scrollTo(0,0);  // 暂时就这么用
+    },
   },
 };
 </script>
@@ -163,6 +176,7 @@ export default {
   /* 暂时绝对定位脱标控制wrapper高度 */
   position: absolute;
   height: calc(100% - 44px);
-  /* height: 600px; */
+  /* top: 44px;
+  bottom: 58px; */
 }
 </style>

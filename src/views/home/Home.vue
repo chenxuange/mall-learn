@@ -110,7 +110,7 @@ export default {
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
   },
   deactivated() {
-    // console.log("deactivated");
+    console.log("deactivated");
     this.saveY = this.$refs.scroll.getScrollY();
   },
   methods: {
