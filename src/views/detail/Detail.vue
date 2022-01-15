@@ -20,6 +20,7 @@
       <!-- 推荐 -->
       <goods-list :goods="goodsList" ref="recommend" />
     </scroll>
+    <DetailBotBar @addCart="addCart" />
     <back-top @click.native="backTop" v-show="this.showBackTop" />
   </div>
 </template>
@@ -34,8 +35,9 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
-import GoodsList from "components/content/goods/GoodsList";
+import DetailBotBar from "./childComps/DetailBotBar.vue";
 
+import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop";
 // 导入请求
 import {
@@ -72,6 +74,7 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBotBar,
     GoodsList,
     BackTop,
   },
@@ -125,14 +128,18 @@ export default {
     // 滚动事件
     contentScroll(position) {
       // 控制返回按钮显示
-      this.showBackTop = (-position.y) > 500;
+      this.showBackTop = -position.y > 500;
       // 浏览到对应位置和导航条切换
       const p_y = -position.y;
       let _len = this.themeTops.length;
-      for(let i = 0; i < _len-1; i++) {
-        if(this.currentIndex !== i && p_y >= this.themeTops[i] && p_y <= this.themeTops[i+1]) {
-          this.currentIndex = i;  // 保存索引
-          this.$refs.nav.currentIndex = this.currentIndex;  // 更新子组件索引
+      for (let i = 0; i < _len - 1; i++) {
+        if (
+          this.currentIndex !== i &&
+          p_y >= this.themeTops[i] &&
+          p_y <= this.themeTops[i + 1]
+        ) {
+          this.currentIndex = i; // 保存索引
+          this.$refs.nav.currentIndex = this.currentIndex; // 更新子组件索引
         }
       }
     },
@@ -152,7 +159,24 @@ export default {
     },
     backTop() {
       // console.log("backtop");
-      this.$refs.scroll.scrollTo(0,0);  // 暂时就这么用
+      this.$refs.scroll.scrollTo(0, 0); // 暂时就这么用
+    },
+    addCart() {
+      console.log("addCart");
+      // 获取购物车需要展示的信息
+      const product = {};
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.discount = this.goods.discount;
+      product.price = this.goods.realPrice;
+      product.iid = this.iid;
+      // console.log(this.goods);
+      //将商品添加到购物车里，直接通过mutations
+      // this.$store.commit("addCart", product);
+      // 通过actions
+      this.$store.dispatch("addCart", product).then(res => {
+        console.log(res);
+      })
     },
   },
 };
