@@ -12,6 +12,7 @@
 
 <script>
 import { Swiper, SwiperItem } from "components/common/swiper";
+// 轮播图组件
 export default {
   name: "HomeSwiper",
   props: {
@@ -28,9 +29,11 @@ export default {
     }
   },
   methods: {
+    // 图片加载
     imgLoaded() {
+      // 只需要一张图片加载，就知道了轮播图高度-偏移距离
       if(!this.isLoaded) {
-        this.$emit("imgLoaded");
+        this.$emit("imgLoaded");  // 父子组件通信
         this.isLoaded = true;
       }
     }

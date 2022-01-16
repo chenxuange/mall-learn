@@ -19,16 +19,17 @@ export default {
     titles: {
       type: Array,
       default() {
-        return ['流行', '新款', '精选'];
+        return [];
       },
     },
   },
   data() {
     return {
-      currentIndex: 0,
+      currentIndex: 0 // 默认tab索引
     };
   },
   methods: {
+    // 点击切换tab，同时给父组件传递索引值
     itemClick(index) {
       this.currentIndex = index;
       this.$emit('tabClick', index);

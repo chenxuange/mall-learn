@@ -42,8 +42,8 @@ import DetailBotBar from "./childComps/DetailBotBar.vue";
 import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop";
 
-// import Toast from 'components/common/toast/Toast'
-// 导入network请求
+// import Toast from 'components/common/toast/Toast'  // 普通封装toast后续插件封装
+// 导入network请求以及封装class
 import {
   getDetail,
   Goods,
@@ -68,9 +68,9 @@ export default {
 
       showBackTop: false,
       currentIndex: 0, // 导航标题索引
-
-      msg: '',
-      isShow: false
+      // toast普通封装需要
+      // msg: '',
+      // isShow: false
     };
   },
   components: {
@@ -90,6 +90,7 @@ export default {
   create() {
     //1.取出iid
     this.iid = this.$route.query.iid;
+    console.log("iid");
     //2.发送商品请求
     this.__getDetail(this.iid);
     //3.发送推荐请求
@@ -101,6 +102,7 @@ export default {
   methods: {
     __getDetail(iid) {
       //向后台请求数据
+      console.log("getDetail");
       getDetail(iid).then((res) => {
         //1.获取数据
         const data = res.result;
@@ -130,6 +132,7 @@ export default {
       });
     },
     __getRecommend() {
+      console.log("getRecommend");
       getRecommend().then((res) => {
         this.goodsList = res.data.list;
       });
@@ -152,6 +155,7 @@ export default {
         }
       }
     },
+    // 详情栏目加载后，记住每个栏目的位置
     imgLoaded() {
       this.$refs.scroll.refresh();
       this.themeTops = [];
@@ -183,17 +187,17 @@ export default {
       //将商品添加到购物车里，直接通过mutations
       // this.$store.commit("addCart", product);
       // 通过actions
-      this.$store.dispatch("addCart", product).then(res => {
+      this.$store.dispatch("addCart", product).then((res) => {
         console.log(res);
         // toast展示提示信息,普通方式封装
-        // this.msg = res; 
+        // this.msg = res;
         // this.isShow = true;
         // setTimeout(() => {
         //   this.isShow = false;
         // }, 2000);
         // toast 插件方式封装
         this.$toast.show(res, 2000);
-      })
+      });
     },
   },
 };

@@ -1,6 +1,6 @@
 import {request} from './request';
 
-// 请求详情页
+// 请求详情页 http://152.136.185.210:7878/api/hy66//detail?iid=1lrzvr8
 export function getDetail(iid) {
     return request({
         url: '/detail',

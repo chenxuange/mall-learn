@@ -5,6 +5,7 @@
 </template>
 
 <script>
+// 单tab, 匿名插槽
 export default {
   name: "TabBar",
 };

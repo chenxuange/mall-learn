@@ -1,5 +1,6 @@
 <template>
   <div id="home">
+    <!-- 顶部主题 -->
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
@@ -11,6 +12,7 @@
       :titles="['流行', '新款', '精选']"
       @tabClick="tabClick"
     />
+    <!-- 滑动大栏,监听滑动事件 -->
     <scroll
       class="content"
       ref="scroll"
@@ -18,17 +20,23 @@
       @scroll="contentScroll"
       :data="showGoodsList"
     >
+      <!-- 轮播图 -->
       <home-swiper :banners="banners" @imgLoaded="swiperLoaded" />
+      <!-- 推荐栏 -->
       <home-recomend :recommends="recommends" />
+      <!-- 特色栏，实际为大图 -->
       <feature-view />
+      <!-- tab切换栏 -->
       <tab-control
         ref="contentTab"
         class="tab-control"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
       />
+      <!-- 货物展示栏 -->
       <goods-list :goods="showGoodsList" />
     </scroll>
+    <!-- 下滑一定距离后显示返回按钮，组件事件上需要.native -->
     <back-top v-show="showBackTop" @click.native="backTop" />
   </div>
 </template>
@@ -68,7 +76,7 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      currentType: "pop",
+      currentType: "pop",  // 默认展示商品种类
       showBackTop: true,
       showTabControl: false,
       offsetTop: 0,
@@ -76,6 +84,7 @@ export default {
     };
   },
   computed: {
+    // 计算展示商品列表
     showGoodsList() {
       return this.goods[this.currentType].list;
     },
@@ -100,15 +109,13 @@ export default {
   destroyed() {
     console.log("home destroyed");
   },
+  // 切换时滑动到退出位置
   activated() {
-    // 和生命周期有关
-    // console.log("activated");
-    // 初始没有bscroll对象
-    // console.log(this.$refs.scroll.scroll); // null
-    // console.log(this.$refs.scroll);
-    // console.log("滑动到上次退出位置")
+    // 和生命周期有关 初始没有bscroll对象
+    console.log("activated");
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
   },
+  // 退出时保存滑动位置
   deactivated() {
     console.log("deactivated");
     this.saveY = this.$refs.scroll.getScrollY();
@@ -130,20 +137,21 @@ export default {
     /**
      * 网络请求的相关方法
      */
+    // 获取home通用数据并封装
     _getHomeMultidata() {
       getHomeMultidata().then((res) => {
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
       });
     },
+    // 获取home商品列表,只需传入商品种类，就可自动查出下一页添加并改变页码
     _getHomeGoods(type) {
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then((res) => {
         const newList = res.data.list;
         this.goods[type].list.push(...newList);
         this.goods[type].page += 1;
-
-        // 完成上拉加载更多
+        // 完成一次上拉加载更多
         this.$refs.scroll.finishedPullUp();
       });
     },
@@ -151,6 +159,7 @@ export default {
     /**
     事件监听的相关方法
      */
+    // 切换tabcontrol,并显示对应商品列表
     tabClick(index) {
       switch (index) {
         case 0:
@@ -165,22 +174,23 @@ export default {
         default:
           this.currentType = "pop";
       }
-      // 将两个tabControl同步
+      // 同步两个tabControl
       this.$refs.topTab.currentIndex = index;
       this.$refs.contentTab.currentIndex = index;
     },
+    // 滑动事件
     contentScroll(position) {
       // console.log(position)
-      // 判断展示backTop
+      // 判断显示backTop
       this.showBackTop = position.y <= -TOP_DISTANCE;
       // 判断显示吸顶效果
       this.showTabControl = position.y <= -this.offsetTop;
     },
+    // 轮播图加载后保存contentTab偏移距离
     swiperLoaded() {
       this.offsetTop = this.$refs.contentTab.$el.offsetTop;
-      // console.log(this.offsetTop);
     },
-
+    // 点击返回顶部按钮，快速返回顶部
     backTop() {
       console.log("backTop");
       // 不要直接调子组件的原生方法，简单包装一下

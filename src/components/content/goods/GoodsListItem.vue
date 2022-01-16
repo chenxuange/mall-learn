@@ -1,10 +1,12 @@
 <template>
+  <!-- 判断对象是否存在，实际判断是否有键 -->
   <div
     class="goods-item"
     @click="itemClick"
     v-if="Object.keys(goodsItem).length !== 0"
   >
-    <img  v-lazy="showImage" @load="imgLoad" alt="" />
+    <!-- 图片懒加载 -->
+    <img v-lazy="showImage" @load="imgLoad" alt="" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -31,20 +33,18 @@ export default {
       //2.跳转到详情页
       this.$router.push({ path: "detail", query: { iid } });
     },
+    // 图片加载消息
     imgLoad() {
-      // console.log("img loaded");
-      // 使用前必须绑定在原型上
+      // 消息总线，使用前必须绑定在原型上,见main.js
       this.$bus.$emit("imgLoad");
-    }
+    },
   },
   computed: {
     showImage() {
-
-      // return this.goodsItem.show.img || this.goodsItem.image;
-      return this.goodsItem.image || this.goodsItem.show.img ;
-
-    }
-  }
+      // 多个组件复用，而传入的对象img出现层次不同
+      return this.goodsItem.image || this.goodsItem.show.img;
+    },
+  },
 };
 </script>
 

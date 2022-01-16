@@ -1,6 +1,6 @@
 
 import {request} from './request'
-
+// 请求数据接口
 export function getHomeMultidata() {
     return request({
         url: '/home/multidata',

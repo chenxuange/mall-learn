@@ -1,7 +1,7 @@
 <template>
   <div>
     <tab-bar>
-      <tab-bar-item link='/home' :activeColor="'blue'">
+      <tab-bar-item link="/home" :activeColor="'blue'">
         <img slot="item-icon" src="~assets/img/tabbar/home.svg" alt="" />
         <img
           slot="item-icon-active"
@@ -42,15 +42,16 @@
 </template>
 
 <script>
-import TabBar from 'components/common/tabbar/TabBar'
-import TabBarItem from 'components/common/tabbar/TabBarItem'
+import TabBar from "components/common/tabbar/TabBar";
+import TabBarItem from "components/common/tabbar/TabBarItem";
 
+// 主tab栏
 export default {
   name: "MainTabBar",
   components: {
     TabBar,
     TabBarItem,
-  }
+  },
 };
 </script>
 

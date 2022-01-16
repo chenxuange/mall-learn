@@ -1,6 +1,6 @@
 // 基础请求模块放在，即便以后axios不维护了，只用修改这层即可
 import axios from "axios";
-
+// request实际就是一个promise
 export function request(config) {
     // 配置路由前缀
     const instance = axios.create({
