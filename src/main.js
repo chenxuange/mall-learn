@@ -4,6 +4,10 @@ import router from './router'
 import LazyLoad from 'vue-lazyload'
 import store from './store'
 
+import toast from 'components/common/toast'
+
+Vue.use(toast)
+
 Vue.config.productionTip = false
 
 // bus用于无关系组件间通信

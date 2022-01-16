@@ -22,6 +22,8 @@
     </scroll>
     <DetailBotBar @addCart="addCart" />
     <back-top @click.native="backTop" v-show="this.showBackTop" />
+    <!-- toast普通方式封装, 后续插件方式封装无需显示使用 -->
+    <!-- <toast :msg="msg" :isShow="isShow" /> -->
   </div>
 </template>
 
@@ -39,7 +41,9 @@ import DetailBotBar from "./childComps/DetailBotBar.vue";
 
 import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop";
-// 导入请求
+
+// import Toast from 'components/common/toast/Toast'
+// 导入network请求
 import {
   getDetail,
   Goods,
@@ -47,6 +51,7 @@ import {
   GoodsParam,
   getRecommend,
 } from "network/detail";
+
 export default {
   name: "Detail",
   data() {
@@ -63,6 +68,9 @@ export default {
 
       showBackTop: false,
       currentIndex: 0, // 导航标题索引
+
+      msg: '',
+      isShow: false
     };
   },
   components: {
@@ -77,8 +85,9 @@ export default {
     DetailBotBar,
     GoodsList,
     BackTop,
+    // Toast
   },
-  created() {
+  create() {
     //1.取出iid
     this.iid = this.$route.query.iid;
     //2.发送商品请求
@@ -176,6 +185,14 @@ export default {
       // 通过actions
       this.$store.dispatch("addCart", product).then(res => {
         console.log(res);
+        // toast展示提示信息,普通方式封装
+        // this.msg = res; 
+        // this.isShow = true;
+        // setTimeout(() => {
+        //   this.isShow = false;
+        // }, 2000);
+        // toast 插件方式封装
+        this.$toast.show(res, 2000);
       })
     },
   },
