@@ -87,17 +87,21 @@ export default {
     BackTop,
     // Toast
   },
-  create() {
-    //1.取出iid
+  created() {
+    // 1.取出iid
+    // // 创建在前，挂载在后，以后着重区别
+    // this.iid = this.$route.query.iid;
+    // console.log("create iid");
+  },
+  mounted() {
+    // console.log(this.$refs.scroll);
+
     this.iid = this.$route.query.iid;
-    console.log("iid");
+    console.log("mounted iid");
     //2.发送商品请求
     this.__getDetail(this.iid);
     //3.发送推荐请求
     this.__getRecommend();
-  },
-  mounted() {
-    // console.log(this.$refs.scroll);
   },
   methods: {
     __getDetail(iid) {
