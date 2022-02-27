@@ -8,7 +8,7 @@
     <tab-control
       ref="topTab"
       v-show="showTabControl"
-      class="tab-control"
+      class="tab-top"
       :titles="['流行', '新款', '精选']"
       @tabClick="tabClick"
     />
@@ -29,7 +29,7 @@
       <!-- tab切换栏 -->
       <tab-control
         ref="contentTab"
-        class="tab-control"
+        class="tab-content"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
       />
@@ -219,7 +219,7 @@ export default {
   z-index: 9;
 }
 
-.tab-control {
+.tab-top, .tab-content {
   /* position: relative; */
   z-index: 9;
 }
