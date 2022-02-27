@@ -207,7 +207,7 @@ export default {
 </script>
 
 <style scoped>
-#home {
+/* #home {
   height: 100vh;
   position: relative;
 }
@@ -220,16 +220,14 @@ export default {
 }
 
 .tab-top, .tab-content {
-  /* position: relative; */
   z-index: 9;
 }
 
-/* 这个很关键，top和bottom决定了wrapper高度小于滑动区域scrollerHeight */
 .content {
   position: absolute;
   top: 44px;
   bottom: 49px;
   left: 0;
   right: 0;
-}
+} */
 </style>

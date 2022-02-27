@@ -19,22 +19,22 @@ export default {
 };
 </script>
 
+
 <style scoped>
+/* display设为flex，子元素float失效
+flex为1，表示放缩比例 */
 .nav-bar {
   display: flex;
   height: 44px;
-  line-height: 44px;
   text-align: center;
+  line-height: 44px;
 }
-
 .left {
   width: 60px;
 }
-
 .right {
   width: 60px;
 }
-
 .center {
   flex: 1;
 }

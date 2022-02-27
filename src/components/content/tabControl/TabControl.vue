@@ -41,28 +41,18 @@ export default {
 <style scoped>
 .tab-control {
   display: flex;
-  text-align: center;
+  height: 40px;
   line-height: 40px;
-  font-size: 15px;
-  background-color: #fff;
-
-  position: sticky;
-  top: 0px;
+  text-align: center;
 }
-
 .tab-control-item {
-  flex: 1;
+  flex: auto;
 }
-
 .tab-control-item span {
   padding: 5px;
 }
-
-.active {
+.active span {
   color: var(--color-high-text);
-}
-
-.tab-control-item.active span {
   border-bottom: 2px solid var(--color-high-text);
 }
 </style>
