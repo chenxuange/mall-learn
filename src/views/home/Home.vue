@@ -77,7 +77,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",  // 默认展示商品种类
-      showBackTop: true,
+      showBackTop: false,
       showTabControl: false,
       offsetTop: 0,
       saveY: 0,
@@ -207,11 +207,11 @@ export default {
 </script>
 
 <style scoped>
-/* #home {
+
+#home {
   height: 100vh;
   position: relative;
 }
-
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
@@ -220,7 +220,9 @@ export default {
 }
 
 .tab-top, .tab-content {
-  z-index: 9;
+  z-index: 19;
+  background-color: #fff;
+  position: relative;
 }
 
 .content {
@@ -229,5 +231,6 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0;
-} */
+} 
+
 </style>

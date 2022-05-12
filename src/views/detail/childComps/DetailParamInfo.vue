@@ -1,42 +1,65 @@
 <template>
-<!-- 防止固定高宽的样式，在没有内容的时候起作用 -->
+  <!-- 防止固定高宽的样式，在没有内容的时候起作用 -->
   <div class="param-info" v-if="Object.keys(paramInfo).length !== 0">
-      <table v-for="(table, index) in paramInfo.sizes" :key="index">
-          <tr v-for="(tr, index_y) in table" :key="index_y">
-              <td v-for="(td, index_z) in tr" :key="index_z">
-                  {{td}}
-              </td>
-          </tr>
-      </table>
-      <table class="info-param">
-          <tr v-for="(info, index) in paramInfo.infos" :key="index">
-              <td>{{info.key}}</td>
-              <td>{{info.value}}</td>
-          </tr>
-      </table>
-      <div class="info-img" v-if="paramInfo.image.length !== 0">
-          <img :src="paramInfo.image" alt="">
-      </div>
+    <table v-for="(table, index) in paramInfo.sizes" :key="index">
+      <tr v-for="(tr, index_y) in table" :key="index_y">
+        <td v-for="(td, index_z) in tr" :key="index_z">
+          {{ td }}
+        </td>
+      </tr>
+    </table>
+    <table class="info-param">
+      <tr v-for="(info, index) in paramInfo.infos" :key="index">
+        <td>{{ info.key }}</td>
+        <td>{{ info.value }}</td>
+      </tr>
+    </table>
+    <div class="info-img" v-if="paramInfo.image.length !== 0">
+      <img :src="paramInfo.image" alt="" />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DetailParamInfo',
+  name: "DetailParamInfo",
   props: {
-      paramInfo: {
-          type: Object,
-          default() {
-              return {}
-          }
-      }
-  }
-
-}
-
+    paramInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+};
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.param-info {
+  padding: 20px 15px;
+  font-size: 14px;
+  border-bottom: 5px solid #f2f5f8;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    tr {
+      height: 42px;
+      td {
+        border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+      }
+    }
+  }
+
+  .info-param {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .info-img img {
+    width: 100%;
+  }
+}
+/* 
     .param-info {
     padding: 20px 15px;
     font-size: 14px;
@@ -57,7 +80,7 @@ export default {
   }
 
   .info-param-key {
-    /*当value的数据量比较大的时候, 会挤到key,所以给一个固定的宽度*/
+    //当value的数据量比较大的时候, 会挤到key,所以给一个固定的宽度
     width: 95px;
   }
 
@@ -71,5 +94,5 @@ export default {
 
   .info-img img {
     width: 100%;
-  }
+  } */
 </style>

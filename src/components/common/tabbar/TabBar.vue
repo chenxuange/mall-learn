@@ -12,12 +12,21 @@ export default {
 </script>
 
 <style scoped>
-  .tab-bar {
+  /* .tab-bar {
     display: flex;
 
     background-color: #f6f6f6;
 
     position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  } */
+
+  .tab-bar {
+    position: fixed;
+    display: flex;
+    background-color: #f6f6f6;
     left: 0;
     right: 0;
     bottom: 0;

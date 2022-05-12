@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-  .goods-list {
+  /* .goods-list {
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
@@ -36,6 +36,15 @@ export default {
   }
 
   .goods-list .item {
+    width: 48%;
+  } */
+  .goods-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    justify-content: space-around;
+  }
+   .goods-list .item {
     width: 48%;
   }
 </style>

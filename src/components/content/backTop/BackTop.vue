@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style scoped>
-  .back-top {
+  /* .back-top {
     position: fixed;
     bottom: 55px;
     right: 5px;
@@ -25,6 +25,16 @@ export default {
   }
 
   .back-top img {
+    width: 100%;
+  } */
+  .back-top {
+    position: fixed;
+    bottom: 55px;
+    right: 5px;
+    width: 45px;
+    height: 45px;
+  }
+   .back-top img {
     width: 100%;
   }
 </style>

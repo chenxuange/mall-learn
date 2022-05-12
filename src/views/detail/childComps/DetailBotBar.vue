@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.bot-bar-wrap {
+/* .bot-bar-wrap {
   height: 49px;
   position: fixed;
   z-index: 20;
@@ -64,5 +64,44 @@ export default {
     color: #fff;
     background-color: var(--color-high-text);
   }
+} */
+.bot-bar-wrap {
+  position: fixed;
+  z-index: 20;
+  height: 49px;
+  // line-height: 49px;
+  display: flex;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
 }
+.bot-bar-item {
+  width: 16%;
+  text-align: center;
+  font-size: 12px;
+
+}
+
+.bot-bar-item img {
+  width: 22px;
+  height: 22px;
+  margin: 4px 0;
+    vertical-align: middle;
+}
+
+.btn {
+  width: 26%;
+  line-height: 49px;
+  font-size: 13px;
+  text-align: center;
+}
+
+  .cart-btn {
+    background-color: #f9cd0b;
+  }
+    .buy-btn {
+    color: #fff;
+    background-color: var(--color-high-text);
+  }
 </style>

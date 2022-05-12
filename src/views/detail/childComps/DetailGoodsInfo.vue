@@ -43,17 +43,70 @@ export default {
   methods: {
     imgLoad() {
       // console.log("load one")
-      if(++this.counter === this.imagesLength) {
+      if (++this.counter === this.imagesLength) {
         this.$emit("imgLoaded");
         // console.log("all load")
       }
-    }
+    },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .goods-info {
+  padding: 20px 0;
+  border-bottom: 5px solid #f2f5f8;
+
+  .info-desc {
+    padding: 0 15px;
+    // 前后两条线
+    .start,
+    .end {
+      width: 90px;
+      height: 1px;
+      background-color: #a3a3a5;
+      position: relative;
+    }
+    .start {
+      float: left;
+    }
+
+    .end {
+      float: right;
+    }
+    .desc {
+      padding: 15px 0;
+      font-size: 14px;
+    }
+    // 加两个棒槌
+    .start::before,
+    .end::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background-color: #333;
+      bottom: 0;
+    }
+    // 后一个棒槌靠右边
+    .end::after {
+      right: 0;
+    }
+  }
+  .info-key {
+    margin: 10px 0 10px 15px;
+    color: #333;
+    font-size: 15px;
+  }
+  // 图片自适应尺寸
+  .info-list {
+    img {
+      width: 100%;
+    }
+  }
+}
+
+/* .goods-info {
   padding: 20px 0;
   border-bottom: 5px solid #f2f5f8;
 }
@@ -105,5 +158,5 @@ export default {
 
 .info-list img {
   width: 100%;
-}
+} */
 </style>

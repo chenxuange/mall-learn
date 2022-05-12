@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-.tab-bar-item {
+/* .tab-bar-item {
   flex: 1;
   text-align: center;
   height: 49px;
@@ -61,6 +61,17 @@ export default {
 
 .active {
   color: red;
-  /* color: @activeColor;  暂时没弄懂  */
+   color: @activeColor;  暂时没弄懂 
+} */
+.tab-bar-item {
+  flex: 1;
+  height: 49px;
+  font-size: 12px;
+  text-align: center;
 }
+.tab-bar-item img {
+  width: 29px;
+  height: 29px;
+}
+
 </style>

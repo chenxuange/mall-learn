@@ -208,7 +208,7 @@ export default {
 </script>
 
 <style scoped>
-#detail {
+/* #detail {
   position: relative;
   z-index: 9;
   background-color: #fff;
@@ -223,9 +223,25 @@ export default {
 
 .content {
   /* 暂时绝对定位脱标控制wrapper高度 */
+  /* position: absolute;
+  height: calc(100% - 44px); */
+  /* top: 44px; */
+  /* bottom: 58px; 
+} */
+
+.detail {
+  position: relative;
+}
+
+.detail-nav {
+   position: relative;
+  z-index: 9;
+  background-color: #fff;
+}
+.content {
   position: absolute;
-  height: calc(100% - 44px);
-  /* top: 44px;
-  bottom: 58px; */
+  /* height: calc(100% - 44px); */
+  top: 44px;
+  bottom: 58px; 
 }
 </style>

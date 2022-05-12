@@ -25,6 +25,7 @@ export default {
 flex为1，表示放缩比例 */
 .nav-bar {
   display: flex;
+  width: 100%;
   height: 44px;
   text-align: center;
   line-height: 44px;

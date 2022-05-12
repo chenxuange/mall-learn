@@ -52,7 +52,7 @@ export default {
 </script>
 
 <style scoped>
-.back {
+/* .back {
   margin-top: 12px;
 }
 
@@ -63,6 +63,22 @@ export default {
 
 .title-item {
   flex: 1;
+  font-size: 14px;
+}
+
+.title-item.active {
+  color: var(--color-high-text);
+} */
+.back {
+  margin-top: 12px;
+}
+.title {
+  display: flex;
+  padding: 0 20px;
+}
+
+.title-item {
+  flex: auto;
   font-size: 14px;
 }
 

@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-.recommend {
+/* .recommend {
     display: flex;
     margin-top: 10px;
     font-size: 14px;
@@ -39,5 +39,23 @@ export default {
 .recommend-item img {
     width: 80px;
     height: 80px;
+} */
+
+.recommend {
+  display: flex;
+      margin-top: 10px;
+    font-size: 14px;
+    padding-bottom: 30px;
+    border-bottom: 10px solid #eee;
 }
+
+.recommend-item {
+  flex: auto;
+  text-align: center;
+}
+.recommend-item img {
+    width: 80px;
+    height: 80px;
+}
+
 </style>
